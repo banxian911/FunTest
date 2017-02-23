@@ -7,11 +7,17 @@ import java.util.List;
 import com.example.funtest.RecycleViewAdapter.OnIClickListener;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,20 +26,26 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnIClickListener{
 
+	public String FUNCSETTING = "FuncSetting";
+	public String ITEMPOSITION = "ItemPosition";
 	private RecyclerView mOnLocScreenRV;
 	private RecycleViewAdapter mAdapter;
 	private List<Shortcuts> mList;
+	
+	private String appName;
+	private String appPakeName;
+	private Drawable appIcon;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		initData();
+		//initData();
 		mOnLocScreenRV = (RecyclerView)findViewById(R.id.on_lockscreen);
 		mOnLocScreenRV.setLayoutManager(new LinearLayoutManager(this));
 		//mAdapter = new RecycleViewAdapter(MainActivity.this,mList);
-		mAdapter = new RecycleViewAdapter(mList);
+		mAdapter = new RecycleViewAdapter(AllApkInfo());
 		mAdapter.setOnIClickListener(this);
 		mOnLocScreenRV.setAdapter(mAdapter);
 		mOnLocScreenRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));//添加分割线
@@ -54,6 +66,8 @@ public class MainActivity extends Activity implements OnIClickListener{
 				//滑动事件
 				Collections.swap(mList, arg1.getAdapterPosition(), arg2.getAdapterPosition());
 				mAdapter.notifyItemMoved(arg1.getAdapterPosition(), arg2.getAdapterPosition());
+				//getSharedPreferences(FUNCSETTING, Context.MODE_PRIVATE).edit().putInt("", 1).commit();
+				
 				return false;
 			}
 			
@@ -78,11 +92,11 @@ public class MainActivity extends Activity implements OnIClickListener{
 	}
 	
 	private void initData(){
-		mList = new ArrayList<>();
-		mList.add(new Shortcuts("Alarm",R.drawable.func_alarm));
-		mList.add(new Shortcuts("Call", R.drawable.func_cal));
-		mList.add(new Shortcuts("Camera", R.drawable.func_camera));
-		mList.add(new Shortcuts("Contact",R.drawable.func_contact));
+//		mList = new ArrayList<>();
+//		mList.add(new Shortcuts("Alarm",R.drawable.func_alarm));
+//		mList.add(new Shortcuts("Call", R.drawable.func_cal));
+//		mList.add(new Shortcuts("Camera", R.drawable.func_camera));
+//		mList.add(new Shortcuts("Contact",R.drawable.func_contact));
 	}
 
 	@Override
@@ -115,15 +129,37 @@ public class MainActivity extends Activity implements OnIClickListener{
 			Toast.makeText(this,"edit_image", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.remove_image:
-			
-			//mList.remove(position);
-			//mAdapter.notifyItemRemoved(position);
 			mAdapter.remove(position);
-			mAdapter.notifyDataSetChanged();
+			//mAdapter.notifyDataSetChanged();
 			Toast.makeText(this,"remove_image"+ position, Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
 		}
+	}
+	
+	public void saveSwapList(List<Shortcuts> mList){
+		//mOnLocScreenRV.get
+		ArrayList<Shortcuts> mArrayList = new ArrayList<>();
+		for (int i = 0; i < mList.size(); i++) {
+			mArrayList.add(mList.get(i));
+		}
+	}
+	
+	private List<Shortcuts> AllApkInfo(){
+		mList = new ArrayList<>();
+		PackageManager pm = this.getPackageManager();
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> list = pm.queryIntentActivities(intent, PackageManager.PERMISSION_GRANTED);
+        for (ResolveInfo rInfo : list) {
+           // results.add(rInfo.activityInfo.applicationInfo.loadLabel(pm).toString());
+            appName = pm.getApplicationLabel(rInfo.activityInfo.applicationInfo).toString();//获得应用名
+            appPakeName = rInfo.activityInfo.applicationInfo.packageName;//获得应用包名
+            appIcon = pm.getApplicationIcon(rInfo.activityInfo.applicationInfo);//获得应用的图标
+            mList.add(new Shortcuts(appName, appPakeName, appIcon));
+            Log.d("Funtest","--apkInfo->" + "appName-->"+ appName + "---appPakeName-->"+ appPakeName + "---appIcon-->"+ appIcon);
+        }
+        return mList;
 	}
 }

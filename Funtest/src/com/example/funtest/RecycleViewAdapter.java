@@ -93,8 +93,12 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 	}
 
 	public void remove(int position){
-		mList.remove(position);
 		notifyItemRemoved(position);
+		Log.d("Funtest","--mList.size()--1->" + mList.size() + "-position--->"+position);
+		if (position != mList.size()) {
+			notifyItemRangeChanged(position, mList.size()-position);
+		}
+		mList.remove(position);
 	}
 	
 	public void add(Shortcuts mShortcuts,int position){
@@ -111,10 +115,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 	@Override
 	public void onBindViewHolder(MyViewHolder arg0, int arg1) {
 		// TODO Auto-generated method stub
-		Log.d("Funtest","--onBindViewHolder->" + "arg1-->"+ arg1 +"--arg0.getAdapterPosition()->"+arg0.getAdapterPosition());
+	//	Log.d("Funtest","--onBindViewHolder->" + "arg1-->"+ arg1 +"--arg0.getAdapterPosition()->"+arg0.getAdapterPosition());
 		Shortcuts mShortcuts = mList.get(arg1);
 		arg0.func_name.setText(mShortcuts.getShortcutsName());
-		arg0.func_icon.setBackgroundResource(mShortcuts.getImage_id());
+		arg0.func_icon.setImageDrawable(mShortcuts.getIcon_Dr());
 		arg0.setItemOnClickListener(arg1);
 	}
 
@@ -122,7 +126,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 	public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
 		// TODO Auto-generated method stub
 		//View view = inflater.inflate(R.layout.onlocksecree_item, arg0);
-		Log.d("Funtest","--onCreateViewHolder->" + "arg1-->"+ arg1);
+	//	Log.d("Funtest","--onCreateViewHolder->" + "arg1-->"+ arg1);
 		View view = LayoutInflater.from(arg0.getContext()).inflate(R.layout.onlocksecree_item, arg0,false);
 		MyViewHolder myViewHolder = new MyViewHolder(view);
 		return myViewHolder;
