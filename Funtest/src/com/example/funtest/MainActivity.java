@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.example.funtest.AlternativeViewAdapter.OnAIClickListener;
 import com.example.funtest.RecycleViewAdapter.OnIClickListener;
 
 import android.app.Activity;
@@ -22,15 +23,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnIClickListener{
+public class MainActivity extends Activity{
 
 	public String FUNCSETTING = "FuncSetting";
 	public String ITEMPOSITION = "ItemPosition";
 	private RecyclerView mOnLocScreenRV;
 	private RecycleViewAdapter mAdapter;
+
 	private List<Shortcuts> mList;
+	
+	private ListView mListView;
+	private AlternativeViewAdapter mAlternativeViewAdapter;
 	
 	private String appName;
 	private String appPakeName;
@@ -45,8 +52,20 @@ public class MainActivity extends Activity implements OnIClickListener{
 		mOnLocScreenRV = (RecyclerView)findViewById(R.id.on_lockscreen);
 		mOnLocScreenRV.setLayoutManager(new LinearLayoutManager(this));
 		//mAdapter = new RecycleViewAdapter(MainActivity.this,mList);
+		initOnlockscreenUI();
+		initAlternativeUI();
+	}
+	
+	private void initAlternativeUI(){
+		mListView = (ListView)findViewById(R.id.on_alternative);
+		mAlternativeViewAdapter = new AlternativeViewAdapter(MainActivity.this, AllApkInfo());
+		mAlternativeViewAdapter.setAOnIClickListener(new AlternativeOnClickListen());
+		mListView.setAdapter(mAlternativeViewAdapter);
+	}
+	
+	private void initOnlockscreenUI(){
 		mAdapter = new RecycleViewAdapter(AllApkInfo());
-		mAdapter.setOnIClickListener(this);
+		mAdapter.setOnIClickListener(new RecycleViewOnClickListen());
 		mOnLocScreenRV.setAdapter(mAdapter);
 		mOnLocScreenRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));//添加分割线
 		
@@ -88,7 +107,6 @@ public class MainActivity extends Activity implements OnIClickListener{
 			}
 		});
 		helper.attachToRecyclerView(mOnLocScreenRV);
-    
 	}
 	
 	private void initData(){
@@ -118,25 +136,40 @@ public class MainActivity extends Activity implements OnIClickListener{
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void OnIClick(View view, int position) {
-		// TODO Auto-generated method stub
-		switch (view.getId()) {
-		case R.id.fun_reorder:
-			Toast.makeText(this,"fun_reorder", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.edit_image:
-			Toast.makeText(this,"edit_image", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.remove_image:
-			mAdapter.remove(position);
-			//mAdapter.notifyDataSetChanged();
-			Toast.makeText(this,"remove_image"+ position, Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			break;
+	private class AlternativeOnClickListen implements OnAIClickListener{
+
+		@Override
+		public void OnIClick(View view, int position) {
+			// TODO Auto-generated method stub
+			Toast.makeText(MainActivity.this,"hello_ale-->" + position, Toast.LENGTH_SHORT).show();
 		}
+		
 	}
+	
+	private class RecycleViewOnClickListen implements OnIClickListener{
+
+		@Override
+		public void OnIClick(View view, int position) {
+			// TODO Auto-generated method stub
+			switch (view.getId()) {
+			case R.id.fun_reorder:
+				Toast.makeText(MainActivity.this,"fun_reorder", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.edit_image:
+				Toast.makeText(MainActivity.this,"edit_image", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.remove_image:
+				mAdapter.remove(position);
+				//mAdapter.notifyDataSetChanged();
+				Toast.makeText(MainActivity.this,"remove_image"+ position, Toast.LENGTH_SHORT).show();
+				break;
+			default:
+				break;
+			}
+		}
+		
+	}
+
 	
 	public void saveSwapList(List<Shortcuts> mList){
 		//mOnLocScreenRV.get

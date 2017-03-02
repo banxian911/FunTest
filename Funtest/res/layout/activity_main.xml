@@ -20,5 +20,22 @@
             android:layout_height="match_parent"
             android:layout_margin="16dp"
             android:layout_weight="1" />
+    
+     <TextView 
+        android:id="@+id/text_alternative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#009385"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Alternative shortcuts"/>
+     
+     <ListView
+            android:id="@+id/on_alternative"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:layout_weight="1" />
 
 </LinearLayout>
