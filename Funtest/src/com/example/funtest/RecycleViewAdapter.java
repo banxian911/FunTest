@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,7 +45,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 		
 		private ImageButton fun_reorder;
 		private ImageView func_icon;
-		private TextView func_name;
+		private EditText func_name;
 		private ImageButton func_edit;
 		private ImageButton func_remove;
 
@@ -53,7 +54,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 			super(itemView);
 			fun_reorder = (ImageButton)itemView.findViewById(R.id.fun_reorder);
 			func_icon = (ImageView)itemView.findViewById(R.id.func_icon);
-			func_name = (TextView)itemView.findViewById(R.id.func_text);
+			func_name = (EditText)itemView.findViewById(R.id.func_text);
 			func_edit = (ImageButton)itemView.findViewById(R.id.edit_image);
 			func_remove = (ImageButton)itemView.findViewById(R.id.remove_image);
 		}

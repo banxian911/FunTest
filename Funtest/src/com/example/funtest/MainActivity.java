@@ -29,6 +29,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity{
 
+	private int DEFAULT_ID = 0;
+	private int ALTERNATIVE_ID = 1;
+	private int OTHERAPP_ID = 2;
 	public String FUNCSETTING = "FuncSetting";
 	public String ITEMPOSITION = "ItemPosition";
 	private RecyclerView mOnLocScreenRV;
@@ -49,8 +52,7 @@ public class MainActivity extends Activity{
 		setContentView(R.layout.activity_main);
 		
 		//initData();
-		mOnLocScreenRV = (RecyclerView)findViewById(R.id.on_lockscreen);
-		mOnLocScreenRV.setLayoutManager(new LinearLayoutManager(this));
+		
 		//mAdapter = new RecycleViewAdapter(MainActivity.this,mList);
 		initOnlockscreenUI();
 		initAlternativeUI();
@@ -58,13 +60,15 @@ public class MainActivity extends Activity{
 	
 	private void initAlternativeUI(){
 		mListView = (ListView)findViewById(R.id.on_alternative);
-		mAlternativeViewAdapter = new AlternativeViewAdapter(MainActivity.this, AllApkInfo());
+		mAlternativeViewAdapter = new AlternativeViewAdapter(MainActivity.this,ShowData(ALTERNATIVE_ID));
 		mAlternativeViewAdapter.setAOnIClickListener(new AlternativeOnClickListen());
 		mListView.setAdapter(mAlternativeViewAdapter);
 	}
 	
 	private void initOnlockscreenUI(){
-		mAdapter = new RecycleViewAdapter(AllApkInfo());
+		mOnLocScreenRV = (RecyclerView)findViewById(R.id.on_lockscreen);
+		mOnLocScreenRV.setLayoutManager(new LinearLayoutManager(this));
+		mAdapter = new RecycleViewAdapter(ShowData(DEFAULT_ID));
 		mAdapter.setOnIClickListener(new RecycleViewOnClickListen());
 		mOnLocScreenRV.setAdapter(mAdapter);
 		mOnLocScreenRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));//添加分割线
@@ -109,12 +113,51 @@ public class MainActivity extends Activity{
 		helper.attachToRecyclerView(mOnLocScreenRV);
 	}
 	
-	private void initData(){
-//		mList = new ArrayList<>();
-//		mList.add(new Shortcuts("Alarm",R.drawable.func_alarm));
-//		mList.add(new Shortcuts("Call", R.drawable.func_cal));
-//		mList.add(new Shortcuts("Camera", R.drawable.func_camera));
-//		mList.add(new Shortcuts("Contact",R.drawable.func_contact));
+	private List<Shortcuts> ShowData(int id){
+		Log.d("Funtest","--ShowData->" + id);
+		mList = new ArrayList<>();
+		List<Shortcuts> showList = new ArrayList<>();
+		mList = originalData();
+		for(int i =0 ;i<mList.size();i++){
+			if (mList.get(i).getID_state() == id) {
+				showList.add(mList.get(i));
+			}
+		}
+		return showList;
+	}
+	
+	private List<Shortcuts> originalData(){
+		mList = new ArrayList<>();
+		mList.add(new Shortcuts(DEFAULT_ID,"Recent call","com.android.dialer",this.getDrawable(R.drawable.func_cal)));
+		mList.add(new Shortcuts(DEFAULT_ID,"Music","com.android.music",this.getDrawable(R.drawable.func_music)));
+		mList.add(new Shortcuts(DEFAULT_ID,"Serach", "",this.getDrawable(R.drawable.func_yahoo) ));
+		mList.add(new Shortcuts(DEFAULT_ID,"Take a Selfie","com.android.camera2",this.getDrawable(R.drawable.func_camera)));
+		mList.add(new Shortcuts(DEFAULT_ID,"Set alarm","com.android.deskclock",this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Recognise a song", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Set timer", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Edit Wallshuffle settings", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Take a selfie", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Start music playlist", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Compose a message", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Compose an email", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Add contact", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Add event", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Start sound recording", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Navigate home", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Set alarm", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Open calculator", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts(ALTERNATIVE_ID,"Turn Torch on/off", "", this.getDrawable(R.drawable.func_alarm)));
+		return mList;
+	}
+	
+	private List<Shortcuts> DefaultData(){
+		return null;
+	}
+	
+	private List<Shortcuts> AlternativeData(){
+		mList = new ArrayList<>();
+		
+		return mList;
 	}
 
 	@Override
@@ -169,6 +212,15 @@ public class MainActivity extends Activity{
 		}
 		
 	}
+	
+	
+	private void AddShortcuts(){
+		
+		
+	}
+	private void EditShortcuts(int position){
+		
+	}
 
 	
 	public void saveSwapList(List<Shortcuts> mList){
@@ -190,7 +242,7 @@ public class MainActivity extends Activity{
             appName = pm.getApplicationLabel(rInfo.activityInfo.applicationInfo).toString();//获得应用名
             appPakeName = rInfo.activityInfo.applicationInfo.packageName;//获得应用包名
             appIcon = pm.getApplicationIcon(rInfo.activityInfo.applicationInfo);//获得应用的图标
-            mList.add(new Shortcuts(appName, appPakeName, appIcon));
+            mList.add(new Shortcuts(OTHERAPP_ID,appName, appPakeName, appIcon));
             Log.d("Funtest","--apkInfo->" + "appName-->"+ appName + "---appPakeName-->"+ appPakeName + "---appIcon-->"+ appIcon);
         }
         return mList;

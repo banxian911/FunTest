@@ -4,12 +4,14 @@ import android.graphics.drawable.Drawable;
 
 public class Shortcuts {
 
+	private int ID_state;
 	private String shortcutsName;
 	private Drawable icon_Dr;
 	private String pakeName;
 	
-	public Shortcuts(String shortcutsName,String pakeName,Drawable icon_Dr) {
+	public Shortcuts(int ID_state,String shortcutsName,String pakeName,Drawable icon_Dr) {
 		// TODO Auto-generated constructor stub
+		this.setID_state(ID_state);
 		this.setIcon_Dr(icon_Dr);
 		this.setShortcutsName(shortcutsName);
 		this.setPakeName(pakeName);
@@ -38,6 +40,14 @@ public class Shortcuts {
 
 	public void setIcon_Dr(Drawable icon_Dr) {
 		this.icon_Dr = icon_Dr;
+	}
+
+	public int getID_state() {
+		return ID_state;
+	}
+
+	public void setID_state(int iD_state) {
+		ID_state = iD_state;
 	}
 	
 	

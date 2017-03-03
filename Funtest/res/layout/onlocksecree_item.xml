@@ -26,7 +26,7 @@
         />
 
     
-    <TextView
+    <EditText
         android:id="@+id/func_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,6 +35,7 @@
         android:layout_marginStart="88dp"
         android:layout_toRightOf="@+id/func_icon"
         android:text="hello"
+        android:background="@null"
         android:textColor="#000"
         android:textSize="16sp" />
 

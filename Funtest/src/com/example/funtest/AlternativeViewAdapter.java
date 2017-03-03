@@ -66,7 +66,10 @@ public class AlternativeViewAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mIClickListener.OnIClick(mHold.Addbt, position);
+				if (mIClickListener != null) {
+					mIClickListener.OnIClick(mHold.Addbt, position);
+				}
+				
 			}
 		});
 		return convertView;
