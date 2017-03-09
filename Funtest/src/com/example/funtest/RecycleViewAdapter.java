@@ -39,13 +39,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 	}
 	
 	public interface OnIClickListener{
-		void OnIClick(View view,int position);
+		void OnIClick(View view,int position,Shortcuts mShortcuts);
 	}
 	class MyViewHolder extends RecyclerView.ViewHolder{
 		
 		private ImageButton fun_reorder;
 		private ImageView func_icon;
-		private EditText func_name;
+		private TextView func_name;
 		private ImageButton func_edit;
 		private ImageButton func_remove;
 
@@ -54,22 +54,25 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 			super(itemView);
 			fun_reorder = (ImageButton)itemView.findViewById(R.id.fun_reorder);
 			func_icon = (ImageView)itemView.findViewById(R.id.func_icon);
-			func_name = (EditText)itemView.findViewById(R.id.func_text);
+			func_name = (TextView)itemView.findViewById(R.id.func_text);
 			func_edit = (ImageButton)itemView.findViewById(R.id.edit_image);
 			func_remove = (ImageButton)itemView.findViewById(R.id.remove_image);
 		}
 
-		public void setItemOnClickListener(int position){
-			fun_reorder.setOnClickListener(new ItemListener(position));
-			func_edit.setOnClickListener(new ItemListener(position));
-			func_remove.setOnClickListener(new ItemListener(position));
+		public void setItemOnClickListener(int position,Shortcuts mShortcuts){
+			fun_reorder.setOnClickListener(new ItemListener(position,mShortcuts));
+			func_edit.setOnClickListener(new ItemListener(position,mShortcuts));
+			func_remove.setOnClickListener(new ItemListener(position,mShortcuts));
 		}
 		private class ItemListener implements OnClickListener{
 
 			private int mPosition;
+			private Shortcuts mShortcuts;
 			
-			private ItemListener(int position){
+			private ItemListener(int position,Shortcuts shortcuts){
 				mPosition = position;
+				mShortcuts = shortcuts;
+				
 			}
 			
 			@Override
@@ -77,13 +80,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 				// TODO Auto-generated method stub
 				switch (v.getId()) {
 				case R.id.fun_reorder:
-					mIClickListener.OnIClick(fun_reorder,mPosition);
+					mIClickListener.OnIClick(fun_reorder,mPosition,mShortcuts);
 					break;
 				case R.id.edit_image:
-					mIClickListener.OnIClick(func_edit,mPosition);
+					mIClickListener.OnIClick(func_edit,mPosition,mShortcuts);
 					break;
 				case R.id.remove_image:
-					mIClickListener.OnIClick(func_remove,mPosition);
+					mIClickListener.OnIClick(func_remove,mPosition,mShortcuts);
 					break;
 				default:
 					break;
@@ -120,7 +123,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 		Shortcuts mShortcuts = mList.get(arg1);
 		arg0.func_name.setText(mShortcuts.getShortcutsName());
 		arg0.func_icon.setImageDrawable(mShortcuts.getIcon_Dr());
-		arg0.setItemOnClickListener(arg1);
+		arg0.setItemOnClickListener(arg1,mShortcuts);
 	}
 
 	@Override

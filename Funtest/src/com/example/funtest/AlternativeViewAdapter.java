@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.funtest.RecycleViewAdapter.OnIClickListener;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,7 +49,7 @@ public class AlternativeViewAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		final ViewHold mHold;
-		Shortcuts mShortcuts = mList.get(position);
+		final Shortcuts mShortcuts = mList.get(position);
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.alternative_item, null);
 			mHold = new ViewHold();
@@ -67,7 +68,7 @@ public class AlternativeViewAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (mIClickListener != null) {
-					mIClickListener.OnIClick(mHold.Addbt, position);
+					mIClickListener.OnIClick(mHold.Addbt, position,mShortcuts);
 				}
 				
 			}
@@ -87,7 +88,16 @@ public class AlternativeViewAdapter extends BaseAdapter {
 	}
 	
 	public interface OnAIClickListener{
-		void OnIClick(View view,int position);
+		void OnIClick(View view,int position,Shortcuts mShortcuts);
 	}
 
+	public void remove(int position){
+		mList.remove(position);
+		notifyDataSetChanged();
+	}
+	
+	public void add(Shortcuts mShortcuts,int position){
+		mList.add(position, mShortcuts);
+		notifyDataSetInvalidated();
+	}
 }

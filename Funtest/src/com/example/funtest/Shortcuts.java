@@ -16,6 +16,12 @@ public class Shortcuts {
 		this.setShortcutsName(shortcutsName);
 		this.setPakeName(pakeName);
 	}
+	
+	public Shortcuts(String shortcutsName,String pakeName,Drawable icon_Dr){
+		this.setIcon_Dr(icon_Dr);
+		this.setShortcutsName(shortcutsName);
+		this.setPakeName(pakeName);
+	}
 
 	public String getShortcutsName() {
 		return shortcutsName;

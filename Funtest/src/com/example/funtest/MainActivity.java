@@ -10,10 +10,12 @@ import com.example.funtest.RecycleViewAdapter.OnIClickListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -46,6 +48,9 @@ public class MainActivity extends Activity{
 	private String appPakeName;
 	private Drawable appIcon;
 	
+	private int OnLocScreenNum;
+	private int AlternativeNum;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,16 +65,19 @@ public class MainActivity extends Activity{
 	
 	private void initAlternativeUI(){
 		mListView = (ListView)findViewById(R.id.on_alternative);
-		mAlternativeViewAdapter = new AlternativeViewAdapter(MainActivity.this,ShowData(ALTERNATIVE_ID));
+		mAlternativeViewAdapter = new AlternativeViewAdapter(MainActivity.this,AlternativeDefaultData());
 		mAlternativeViewAdapter.setAOnIClickListener(new AlternativeOnClickListen());
 		mListView.setAdapter(mAlternativeViewAdapter);
+		AlternativeNum = AlternativeDefaultData().size();
 	}
 	
 	private void initOnlockscreenUI(){
 		mOnLocScreenRV = (RecyclerView)findViewById(R.id.on_lockscreen);
 		mOnLocScreenRV.setLayoutManager(new LinearLayoutManager(this));
-		mAdapter = new RecycleViewAdapter(ShowData(DEFAULT_ID));
+		mAdapter = new RecycleViewAdapter(OnLocScreenDefaultData());
 		mAdapter.setOnIClickListener(new RecycleViewOnClickListen());
+		OnLocScreenNum = OnLocScreenDefaultData().size();
+		
 		mOnLocScreenRV.setAdapter(mAdapter);
 		mOnLocScreenRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));//添加分割线
 		
@@ -117,7 +125,11 @@ public class MainActivity extends Activity{
 		Log.d("Funtest","--ShowData->" + id);
 		mList = new ArrayList<>();
 		List<Shortcuts> showList = new ArrayList<>();
-		mList = originalData();
+		if (!readData().isEmpty()) {
+			mList = readData();
+		} else {
+			mList = DefaultData();
+		}
 		for(int i =0 ;i<mList.size();i++){
 			if (mList.get(i).getID_state() == id) {
 				showList.add(mList.get(i));
@@ -126,7 +138,7 @@ public class MainActivity extends Activity{
 		return showList;
 	}
 	
-	private List<Shortcuts> originalData(){
+	private List<Shortcuts> DefaultData(){
 		mList = new ArrayList<>();
 		mList.add(new Shortcuts(DEFAULT_ID,"Recent call","com.android.dialer",this.getDrawable(R.drawable.func_cal)));
 		mList.add(new Shortcuts(DEFAULT_ID,"Music","com.android.music",this.getDrawable(R.drawable.func_music)));
@@ -150,13 +162,32 @@ public class MainActivity extends Activity{
 		return mList;
 	}
 	
-	private List<Shortcuts> DefaultData(){
-		return null;
-	}
 	
-	private List<Shortcuts> AlternativeData(){
+	private List<Shortcuts> OnLocScreenDefaultData(){
 		mList = new ArrayList<>();
-		
+		mList.add(new Shortcuts("Recent call","com.android.dialer",this.getDrawable(R.drawable.func_cal)));
+		mList.add(new Shortcuts("Music","com.android.music",this.getDrawable(R.drawable.func_music)));
+		mList.add(new Shortcuts("Serach", "",this.getDrawable(R.drawable.func_yahoo) ));
+		mList.add(new Shortcuts("Take a Selfie","com.android.camera2",this.getDrawable(R.drawable.func_camera)));
+		mList.add(new Shortcuts("Set alarm","com.android.deskclock",this.getDrawable(R.drawable.func_alarm)));
+		return mList;
+	}
+	private List<Shortcuts> AlternativeDefaultData(){
+		mList = new ArrayList<>();
+		mList.add(new Shortcuts("Recognise a song", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Set timer", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Edit Wallshuffle settings", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Take a selfie", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Start music playlist", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Compose a message", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Compose an email", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Add contact", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Add event", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Start sound recording", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Navigate home", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Set alarm", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Open calculator", "", this.getDrawable(R.drawable.func_alarm)));
+		mList.add(new Shortcuts("Turn Torch on/off", "", this.getDrawable(R.drawable.func_alarm)));
 		return mList;
 	}
 
@@ -182,9 +213,12 @@ public class MainActivity extends Activity{
 	private class AlternativeOnClickListen implements OnAIClickListener{
 
 		@Override
-		public void OnIClick(View view, int position) {
+		public void OnIClick(View view, int position,Shortcuts mShortcuts) {
 			// TODO Auto-generated method stub
-			Toast.makeText(MainActivity.this,"hello_ale-->" + position, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(MainActivity.this,"hello_ale-->" + position, Toast.LENGTH_SHORT).show();
+	
+			AddOnLockData(position,mShortcuts);
+			//updateUI();
 		}
 		
 	}
@@ -192,7 +226,7 @@ public class MainActivity extends Activity{
 	private class RecycleViewOnClickListen implements OnIClickListener{
 
 		@Override
-		public void OnIClick(View view, int position) {
+		public void OnIClick(View view, int position,Shortcuts mShortcuts) {
 			// TODO Auto-generated method stub
 			switch (view.getId()) {
 			case R.id.fun_reorder:
@@ -202,9 +236,9 @@ public class MainActivity extends Activity{
 				Toast.makeText(MainActivity.this,"edit_image", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.remove_image:
-				mAdapter.remove(position);
+				RemoveOnLockData(position, mShortcuts);
 				//mAdapter.notifyDataSetChanged();
-				Toast.makeText(MainActivity.this,"remove_image"+ position, Toast.LENGTH_SHORT).show();
+				//Toast.makeText(MainActivity.this,"remove_image"+ position, Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -213,10 +247,29 @@ public class MainActivity extends Activity{
 		
 	}
 	
+	private List<Shortcuts> readData(){
+		return null;
+	}
 	
-	private void AddShortcuts(){
-		
-		
+	
+	private void updateUI(){
+		mAlternativeViewAdapter.notifyDataSetChanged();
+		mAdapter.notifyDataSetChanged();
+	}
+	
+	private void RemoveOnLockData(int position,Shortcuts mShortcuts){
+		mAdapter.remove(position);
+		mAlternativeViewAdapter.add(mShortcuts, 0);
+	}
+	
+	private void AddOnLockData(int position,Shortcuts mShortcuts){
+		 Log.d("Funtest","--mAdapter.getItemCount()->" + mAdapter.getItemCount());
+		if (mAdapter.getItemCount() < 5 ) {
+			mAlternativeViewAdapter.remove(position);
+			mAdapter.add(mShortcuts, 0);
+		} else {
+			Toast.makeText(this,"Maximum of 5 shortcuts reached. Remove one from the lock screen first.", Toast.LENGTH_SHORT).show();
+		}	
 	}
 	private void EditShortcuts(int position){
 		
@@ -246,5 +299,15 @@ public class MainActivity extends Activity{
             Log.d("Funtest","--apkInfo->" + "appName-->"+ appName + "---appPakeName-->"+ appPakeName + "---appIcon-->"+ appIcon);
         }
         return mList;
+	}
+	
+	public static void setPreferString(Context context, String key,String defaultValue){
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+		settings.edit().putString(key, defaultValue).commit();
+	}
+	
+	public static String getPreferString(Context context,String key,String defaultValue){
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+		return settings.getString(key, defaultValue);
 	}
 }
