@@ -95,17 +95,17 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 	}
 
 	public void remove(int position){
-		notifyItemRemoved(position);
-		Log.d("Funtest","--mList.size()--1->" + mList.size() + "-position--->"+position);
-		if (position != mList.size()) {
-			notifyItemRangeChanged(position, mList.size()-position);
-		}
+		
 		mList.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position,getItemCount());
+		Log.d("Funtest", "--mList.size--->" + mList.size());
 	}
 	
 	public void add(Shortcuts mShortcuts,int position){
 		mList.add(position, mShortcuts);
 		notifyItemInserted(position);
+		notifyItemRangeChanged(position, mList.size() - position);
 	}
 	
 	@Override

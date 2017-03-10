@@ -215,6 +215,7 @@ public class MainActivity extends Activity {
 	private void RemoveOnLockData(int position, Shortcuts mShortcuts) {
 		mAdapter.remove(position);
 		mAlternativeViewAdapter.add(mShortcuts, 0);
+		Log.d("Funtest", "--mShowOnCList.size--->" + mShowOnCList.size() + "---mShowAltList-->"+ mShowAltList.size());
 	}
 
 	private void AddOnLockData(int position, Shortcuts mShortcuts) {
@@ -314,17 +315,18 @@ public class MainActivity extends Activity {
 	}
 
 	private void SaveAllData(){
+		Log.d("Funtest", "--mShowOnCList.size-AAA-->" + mShowOnCList.size() + "---mShowAltList-->"+ mShowAltList.size());
 		saveData(KEY_ONLOCKSCREEN,mShowOnCList);
 		saveData(KEY_ALTERNATIVE, mShowAltList);
 	}
 	
 	public void saveData(String keyStr,List<Shortcuts> mList) {
 		// mOnLocScreenRV.get
-		if (!mList.isEmpty()) {
+	//	if (!mList.isEmpty()) {
 			String jString = changeArrayDateToJsonString(keyStr,mList);
 			Log.d("Funtest", "--jString->" + jString);
 			setPreferString(this, keyStr, jString);
-		}
+	//	}
 		
 	}
 
