@@ -2,12 +2,17 @@ package com.example.funtest;
 
 import android.graphics.drawable.Drawable;
 
-public class Shortcuts {
+public class Shortcuts{
 
 	private int ID_state;
 	private String shortcutsName;
 	private Drawable icon_Dr;
+	private int ID_icon;
 	private String pakeName;
+	
+	public Shortcuts() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public Shortcuts(int ID_state,String shortcutsName,String pakeName,Drawable icon_Dr) {
 		// TODO Auto-generated constructor stub
@@ -21,6 +26,12 @@ public class Shortcuts {
 		this.setIcon_Dr(icon_Dr);
 		this.setShortcutsName(shortcutsName);
 		this.setPakeName(pakeName);
+	}
+	
+	public Shortcuts(String shortcutsName,String pakeName,int ID_icon){
+		this.setShortcutsName(shortcutsName);
+		this.setPakeName(pakeName);
+		this.setID_icon(ID_icon);
 	}
 
 	public String getShortcutsName() {
@@ -54,6 +65,14 @@ public class Shortcuts {
 
 	public void setID_state(int iD_state) {
 		ID_state = iD_state;
+	}
+
+	public int getID_icon() {
+		return ID_icon;
+	}
+
+	public void setID_icon(int iD_icon) {
+		ID_icon = iD_icon;
 	}
 	
 	

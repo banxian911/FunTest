@@ -2,10 +2,7 @@ package com.example.funtest;
 
 import java.util.List;
 
-import com.example.funtest.RecycleViewAdapter.OnIClickListener;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class AlternativeViewAdapter extends BaseAdapter {
 
@@ -60,7 +56,7 @@ public class AlternativeViewAdapter extends BaseAdapter {
 		}else {
 			mHold = (ViewHold)convertView.getTag();
 		}
-		mHold.mImageView.setBackground(mShortcuts.getIcon_Dr());
+		mHold.mImageView.setBackgroundResource(mShortcuts.getID_icon());;
 		mHold.mTextView.setText(mShortcuts.getShortcutsName());
 		mHold.Addbt.setOnClickListener(new OnClickListener() {
 			

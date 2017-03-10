@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>{
 
@@ -122,7 +120,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 	//	Log.d("Funtest","--onBindViewHolder->" + "arg1-->"+ arg1 +"--arg0.getAdapterPosition()->"+arg0.getAdapterPosition());
 		Shortcuts mShortcuts = mList.get(arg1);
 		arg0.func_name.setText(mShortcuts.getShortcutsName());
-		arg0.func_icon.setImageDrawable(mShortcuts.getIcon_Dr());
+		arg0.func_icon.setImageResource(mShortcuts.getID_icon());
 		arg0.setItemOnClickListener(arg1,mShortcuts);
 	}
 
