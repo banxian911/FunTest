@@ -40,7 +40,7 @@
         <ListView
             android:id="@+id/on_alternative"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="wrap_content"
             android:layout_margin="16dp"
             />
     </LinearLayout>
