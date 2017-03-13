@@ -4,5 +4,7 @@
     <string name="app_name">Funtest</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="no_open">Func lers you open app functions directly from the lock screen.</string>
 
 </resources>

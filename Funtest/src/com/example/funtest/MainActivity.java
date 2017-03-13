@@ -1,5 +1,7 @@
 package com.example.funtest;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -49,11 +53,13 @@ public class MainActivity extends Activity {
 	private List<Shortcuts> mShowAltList;
 	private ListView mListView;
 	private AlternativeViewAdapter mAlternativeViewAdapter;
+	private TextView noOpen_text;
 
 	private String appName;
 	private String appPakeName;
 	private Drawable appIcon;
 
+//	private static final String FilePath ="/data/user/0/com.android.systemui/file";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,8 +68,13 @@ public class MainActivity extends Activity {
 		// initData();
 
 		// mAdapter = new RecycleViewAdapter(MainActivity.this,mList);
-		initOnlockscreenUI();
-		initAlternativeUI();
+		noOpen_text = (TextView)findViewById(R.id.text_noopen);
+		/*if (isOpenFunc()) {
+			startFunc();
+		} else {
+			stopFunc();
+		}*/
+		startFunc();
 	}
 
 	private void initAlternativeUI() {
@@ -128,30 +139,30 @@ public class MainActivity extends Activity {
 
 	private List<Shortcuts> OnLocScreenDefaultData() {
 		mList = new ArrayList<>();
-		mList.add(new Shortcuts("Search with Google voice", "com.android.dialer", R.drawable.func_cal));
-		mList.add(new Shortcuts("Show recent calls", "com.android.music", R.drawable.func_music));
-		mList.add(new Shortcuts("Search with Yahoo", "com.android.music", R.drawable.func_yahoo));
-		mList.add(new Shortcuts("Edit Func settings", "com.android.camera2", R.drawable.func_camera));
-		mList.add(new Shortcuts("Start the camera", "com.android.deskclock", R.drawable.func_alarm));
+		mList.add(new Shortcuts("Search with Google voice", "com.google.android.googlequicksearchbox",R.drawable.func_cal,"com.google.android.apps.gsa.queryentry.QueryEntryActivity"));
+		mList.add(new Shortcuts("Show recent calls", "com.android.dialer", R.drawable.func_music,"com.android.dialer.DialtactsActivity"));
+		mList.add(new Shortcuts("Search with Yahoo", "com.android.browser", R.drawable.func_yahoo,"http://www.yahoo.com"));
+		mList.add(new Shortcuts("Edit Func settings", "com.android.camera2", R.drawable.func_camera,""));
+		mList.add(new Shortcuts("Start the camera", "com.android.camera2", R.drawable.func_alarm,""));
 		return mList;
 	}
 
 	private List<Shortcuts> AlternativeDefaultData() {
 		mList = new ArrayList<>();
-		mList.add(new Shortcuts("Recognise a song", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Set timer", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Edit Wallshuffle settings", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Take a selfie", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Start music playlist", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Compose a message", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Compose an email", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Add contact", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Add event", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Start sound recording", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Navigate home", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Set alarm", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Open calculator", "", R.drawable.func_alarm));
-		mList.add(new Shortcuts("Turn Torch on/off", "", R.drawable.func_alarm));
+		mList.add(new Shortcuts("Recognise a song", "com.android.music", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Set timer", "com.android.deskclock", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Edit Wallshuffle settings", "", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Take a selfie", "", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Start music playlist", "com.android.music", R.drawable.func_music,""));
+		mList.add(new Shortcuts("Compose a message", "", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Compose an email", "com.android.email", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Add contact", "com.android.contacts", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Add event", "", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Start sound recording", "com.android.soundrecorder", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Navigate home", "com.android.browser", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Set alarm", "com.android.deskclock", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Open calculator", "com.android.calculator2", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Turn Torch on/off", "com.broadcom.torch", R.drawable.func_alarm,""));
 		return mList;
 	}
 
@@ -281,6 +292,7 @@ public class MainActivity extends Activity {
 				mShortcuts.setPakeName(jsonObject.getString("pakeName"));
 				mShortcuts.setShortcutsName(jsonObject.getString("shortcutsName"));
 				mShortcuts.setID_icon(jsonObject.getInt("ID_icon"));
+				mShortcuts.setExtras(jsonObject.getString("extras"));
 			//	Log.d("Funtest", "-- jsonObject2-->" + jsonObject);
 				list.add(mShortcuts);
 			}
@@ -301,6 +313,7 @@ public class MainActivity extends Activity {
 				mJsonObject2.put("shortcutsName", mShortcutsList.get(i).getShortcutsName());
 				mJsonObject2.put("pakeName", mShortcutsList.get(i).getPakeName());
 				mJsonObject2.put("ID_icon", mShortcutsList.get(i).getID_icon());
+				mJsonObject2.put("extras", mShortcutsList.get(i).getExtras());
 				mJsonArray.put(mJsonObject2);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -314,6 +327,22 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 		return mJsonObject.toString();
+	}
+	
+	
+	public static void saveInfoToTxt(String filePath, String fileName, String fileContent) throws Exception {
+		if (fileContent != null) {
+			Log.d("Funtest", "--filePath->" + filePath+ "--fileName->"+fileName);
+			File file = new File(filePath);
+			//Log.d("Funtest", "--file.exists()->" + file.exists()+ "-file.mkdirs()-->"+file.mkdirs()+"--->"+file);
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+			File mFile = new File(file, fileName);
+			FileOutputStream outputStream = new FileOutputStream(mFile);
+			outputStream.write(fileContent.getBytes());
+			outputStream.close();
+		}
 	}
 
 	private void SaveAllData(){
@@ -330,7 +359,16 @@ public class MainActivity extends Activity {
 			Log.d("Funtest", "--jString->" + jString);
 			setPreferString(this, keyStr, jString);
 	//	}
-		
+		if (keyStr.equals(KEY_ONLOCKSCREEN)) {
+			String filepath = Environment.getExternalStorageDirectory() +File.separator+"File"+File.separator;
+			try {
+				Log.d("Funtest", "--filepath->" + filepath);
+				saveInfoToTxt(filepath,"Func.txt", jString);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private List<Shortcuts> AllApkInfo() {
@@ -394,5 +432,84 @@ public class MainActivity extends Activity {
         // listView.getDividerHeight()获取子项间分隔符占用的高度   
         // params.height最后得到整个ListView完整显示需要的高度   
         listView.setLayoutParams(params);   
-    }   
+    }
+	
+	private boolean isOpenFunc(){
+		int isOpen = getSharedPreferences(FUNCSETTING, Context.MODE_PRIVATE).getInt("isOpenFunc", 0);
+		if (isOpen == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	private void startFunc(){
+		noOpen_text.setVisibility(View.GONE);
+		initOnlockscreenUI();
+		initAlternativeUI();
+		//getSharedPreferences(FUNCSETTING, Context.MODE_PRIVATE).edit().putInt("isOpenFunc", 0).commit();
+	}
+	
+	private void stopFunc(){
+		//getSharedPreferences(FUNCSETTING, Context.MODE_PRIVATE).edit().putInt("isOpenFunc", 1).commit();
+		noOpen_text.setVisibility(View.VISIBLE);
+	}
+	
+	/*
+        //public static final int recent_subject_list = 8;
+
+         public String getFileName(String filePath,String filename) {
+             File file = new File(filePath);
+             if (!file.exists())
+             file.mkdirs();
+             String fileName = filename+"";
+             return fileName;
+         }
+
+
+         *//**
+         * 存储缓存文件：
+         *//*
+        public void saveRecentSubList(List<Shortcuts> list,String filePath) {
+          //  int type = recent_subject_list;
+           // String fileName = filePath+ File.separator + getFileNameById(studentId);
+            File file = new File(fileName);
+            try {
+                if (!file.exists())
+                    file.createNewFile();
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName));
+                oos.writeObject(list);
+                oos.flush();
+                oos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        *//**
+         * 读取缓存文件：
+         *//* 
+
+         public List<Shortcuts> getRecentSubList(String uid, String studentId) {
+         //   int type = recent_subject_list;
+            List<Shortcuts> resultList = new ArrayList<>();
+          //  String fileName = Config.CACHE_DATA_PATH + File.separator + getFileNameById(type, uid, studentId);
+            try {
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+                ArrayList<Shortcuts> list_ext = (ArrayList<Shortcuts>) ois.readObject();
+
+                for (Shortcuts obj : list_ext) {
+                	Shortcuts bean = obj;
+                    if (bean != null) {
+                        resultList.add(bean);
+                    }
+                }
+                ois.close();
+            } catch (Exception e) {
+                return resultList;
+            }
+            return resultList;
+        }
+    */
+	
 }

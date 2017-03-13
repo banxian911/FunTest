@@ -22,6 +22,7 @@
         android:layout_height="24dp"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
+        android:background="#006400"
         android:layout_toRightOf="@+id/fun_reorder" 
         />
 

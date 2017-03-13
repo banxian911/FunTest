@@ -9,6 +9,7 @@ public class Shortcuts{
 	private Drawable icon_Dr;
 	private int ID_icon;
 	private String pakeName;
+	private String extras;
 	
 	public Shortcuts() {
 		// TODO Auto-generated constructor stub
@@ -32,6 +33,13 @@ public class Shortcuts{
 		this.setShortcutsName(shortcutsName);
 		this.setPakeName(pakeName);
 		this.setID_icon(ID_icon);
+	}
+	
+	public Shortcuts(String shortcutsName,String pakeName,int ID_icon,String extras){
+		this.setShortcutsName(shortcutsName);
+		this.setPakeName(pakeName);
+		this.setID_icon(ID_icon);
+		this.setExtras(extras);
 	}
 
 	public String getShortcutsName() {
@@ -73,6 +81,14 @@ public class Shortcuts{
 
 	public void setID_icon(int iD_icon) {
 		ID_icon = iD_icon;
+	}
+
+	public String getExtras() {
+		return extras;
+	}
+
+	public void setExtras(String extras) {
+		this.extras = extras;
 	}
 	
 	
