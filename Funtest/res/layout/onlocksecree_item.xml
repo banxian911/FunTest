@@ -1,64 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:orientation="horizontal" >
-    
-    
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingBottom="8.0dip"
+    android:paddingLeft="16.0dip"
+    android:paddingRight="16.0dip"
+    android:paddingTop="8.0dip" >
+
     <ImageButton
         android:id="@+id/fun_reorder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:background="#00000000" 
-        android:src="@drawable/settings_func_reorder" />
-    
-    <ImageView
-        android:id="@+id/func_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#006400"
-        android:layout_toRightOf="@+id/fun_reorder" 
+        android:layout_width="36.0dip"
+        android:layout_height="36.0dip"
+        android:layout_gravity="center_vertical"
+        android:background="#00000000"
+        android:src="@drawable/settings_func_reorder"
         />
 
-    
+    <ImageView
+        android:id="@+id/func_icon"
+        android:layout_width="24.0dip"
+        android:layout_height="24.0dip"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8.0dip"
+        android:tint="#ff009688" />
+
     <TextView
         android:id="@+id/func_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0.0dip"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:layout_marginStart="88dp"
-        android:layout_toRightOf="@+id/func_icon"
-        android:text="hello"
-        android:background="@null"
-        android:textColor="#000"
-        android:textSize="16sp" />
+        android:layout_marginStart="16.0dip"
+        android:layout_weight="1.0"
+        android:gravity="center_vertical"
+        android:textColor="#ffc2c2c2"
+        android:textSize="16.0sp" />
 
-    
     <ImageButton
         android:id="@+id/edit_image"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_alignTop="@+id/remove_image"
-        android:layout_toLeftOf="@+id/remove_image"
-        android:background="#00000000" 
-        android:src="@drawable/func_settings_edit" />
-    
+        android:layout_width="36.0dip"
+        android:layout_height="36.0dip"
+        android:layout_gravity="center_vertical"
+        android:background="?android:selectableItemBackground"
+        android:src="@drawable/func_settings_edit"
+        android:visibility="gone" />
+
     <ImageButton
         android:id="@+id/remove_image"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:layout_marginRight="40dp"
-        android:background="#00000000" 
+        android:layout_width="36.0dip"
+        android:layout_height="36.0dip"
+        android:layout_gravity="center_vertical"
+        android:background="?android:selectableItemBackground"
         android:src="@drawable/func_settings_remove" />
 
-</RelativeLayout>
+</LinearLayout>

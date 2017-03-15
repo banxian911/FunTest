@@ -39,8 +39,8 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private int DEFAULT_ID = 0;
-	private int ALTERNATIVE_ID = 1;
+	//private int DEFAULT_ID = 0;
+	//private int ALTERNATIVE_ID = 1;
 	private int OTHERAPP_ID = 2;
 	private String FUNCSETTING = "FuncSetting";
 	private String KEY_ONLOCKSCREEN = "key_onlockscreen";
@@ -363,7 +363,7 @@ public class MainActivity extends Activity {
 			String filepath = Environment.getExternalStorageDirectory() +File.separator+"File"+File.separator;
 			try {
 				Log.d("Funtest", "--filepath->" + filepath);
-				saveInfoToTxt(filepath,"Func.txt", jString);
+				saveInfoToTxt(filepath,"Func.dat", jString);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
