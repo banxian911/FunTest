@@ -58,17 +58,20 @@ public class MainActivity extends Activity {
 	private String appName;
 	private String appPakeName;
 	private Drawable appIcon;
-
+	private View mShowView;
+	String filepath = Environment.getExternalStorageDirectory() +File.separator+"File"+File.separator;
 //	private static final String FilePath ="/data/user/0/com.android.systemui/file";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.func_main);
 
 		// initData();
 
 		// mAdapter = new RecycleViewAdapter(MainActivity.this,mList);
 		noOpen_text = (TextView)findViewById(R.id.text_noopen);
+		mShowView = findViewById(R.id.main_ui);
+	
 		/*if (isOpenFunc()) {
 			startFunc();
 		} else {
@@ -139,30 +142,30 @@ public class MainActivity extends Activity {
 
 	private List<Shortcuts> OnLocScreenDefaultData() {
 		mList = new ArrayList<>();
-		mList.add(new Shortcuts("Search with Google voice", "com.google.android.googlequicksearchbox",R.drawable.func_cal,"com.google.android.apps.gsa.queryentry.QueryEntryActivity"));
-		mList.add(new Shortcuts("Show recent calls", "com.android.dialer", R.drawable.func_music,"com.android.dialer.DialtactsActivity"));
+		mList.add(new Shortcuts("Search with Google voice", "com.google.android.googlequicksearchbox",R.drawable.func_voice,"com.google.android.apps.gsa.queryentry.QueryEntryActivity"));
+		mList.add(new Shortcuts("Show recent calls", "com.android.dialer", R.drawable.func_recents,"com.android.dialer.DialtactsActivity"));
 		mList.add(new Shortcuts("Search with Yahoo", "com.android.browser", R.drawable.func_yahoo,"http://www.yahoo.com"));
-		mList.add(new Shortcuts("Edit Func settings", "com.android.camera2", R.drawable.func_camera,""));
-		mList.add(new Shortcuts("Start the camera", "com.android.camera2", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Edit Func settings", "com.android.camera2", R.drawable.func_func_settings,""));
+		mList.add(new Shortcuts("Start the camera", "com.android.camera2", R.drawable.func_camera,""));
 		return mList;
 	}
 
 	private List<Shortcuts> AlternativeDefaultData() {
 		mList = new ArrayList<>();
-		mList.add(new Shortcuts("Recognise a song", "com.android.music", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Set timer", "com.android.deskclock", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Edit Wallshuffle settings", "", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Take a selfie", "", R.drawable.func_alarm,""));
+		//mList.add(new Shortcuts("Recognise a song", "com.android.music", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Set timer", "com.android.deskclock", R.drawable.func_timer,""));
+		//mList.add(new Shortcuts("Edit Wallshuffle settings", "", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Take a selfie", "", R.drawable.func_selfie,""));
 		mList.add(new Shortcuts("Start music playlist", "com.android.music", R.drawable.func_music,""));
-		mList.add(new Shortcuts("Compose a message", "", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Compose an email", "com.android.email", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Add contact", "com.android.contacts", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Add event", "", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Start sound recording", "com.android.soundrecorder", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Navigate home", "com.android.browser", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Compose a message", "", R.drawable.func_message,""));
+		mList.add(new Shortcuts("Compose an email", "com.android.email", R.drawable.func_email,""));
+		mList.add(new Shortcuts("Add contact", "com.android.contacts", R.drawable.func_contact,""));
+		mList.add(new Shortcuts("Add event", "", R.drawable.func_event,""));
+		mList.add(new Shortcuts("Start sound recording", "com.android.soundrecorder", R.drawable.func_record,""));
+		mList.add(new Shortcuts("Navigate home", "com.android.browser", R.drawable.func_navi,""));
 		mList.add(new Shortcuts("Set alarm", "com.android.deskclock", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Open calculator", "com.android.calculator2", R.drawable.func_alarm,""));
-		mList.add(new Shortcuts("Turn Torch on/off", "com.broadcom.torch", R.drawable.func_alarm,""));
+		mList.add(new Shortcuts("Open calculator", "com.android.calculator2", R.drawable.func_cal,""));
+		mList.add(new Shortcuts("Turn Torch on/off", "com.broadcom.torch", R.drawable.func_torch_on,""));
 		return mList;
 	}
 
@@ -237,7 +240,7 @@ public class MainActivity extends Activity {
 			mAlternativeViewAdapter.remove(position);
 			mAdapter.add(mShortcuts, 0);
 		} else {
-			Toast.makeText(this, "Maximum of 5 shortcuts reached. Remove one from the lock screen first.",
+			Toast.makeText(this, R.string.settings_func_selected_full_msg,
 					Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -360,7 +363,7 @@ public class MainActivity extends Activity {
 			setPreferString(this, keyStr, jString);
 	//	}
 		if (keyStr.equals(KEY_ONLOCKSCREEN)) {
-			String filepath = Environment.getExternalStorageDirectory() +File.separator+"File"+File.separator;
+			
 			try {
 				Log.d("Funtest", "--filepath->" + filepath);
 				saveInfoToTxt(filepath,"Func.dat", jString);
@@ -511,5 +514,6 @@ public class MainActivity extends Activity {
             return resultList;
         }
     */
+	
 	
 }

@@ -32,7 +32,6 @@
         android:layout_marginStart="16.0dip"
         android:layout_weight="1.0"
         android:gravity="center_vertical"
-        android:textColor="#ffc2c2c2"
         android:textSize="16.0sp" />
 
     <ImageButton

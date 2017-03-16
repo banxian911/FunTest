@@ -9,22 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
-        
-        <TextView android:id="@+id/text_noopen"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="@string/no_open"
-            android:layout_gravity="center_vertical"
-            android:textSize="36sp"
-            android:visibility="gone"/>
-
+       
         <TextView
             android:id="@+id/text_shortcuts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:text="Shortcuts on lock screen"
+            android:text="@string/func_text_shortcuts"
             android:textColor="#009385"
             android:textSize="14sp" />
 
@@ -41,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:text="Alternative shortcuts"
+            android:text="@string/func_text_alternative"
             android:textColor="#009385"
             android:textSize="14sp" />
 

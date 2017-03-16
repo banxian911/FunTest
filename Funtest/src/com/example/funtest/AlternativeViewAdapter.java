@@ -56,7 +56,7 @@ public class AlternativeViewAdapter extends BaseAdapter {
 		}else {
 			mHold = (ViewHold)convertView.getTag();
 		}
-		mHold.mImageView.setBackgroundResource(mShortcuts.getID_icon());;
+		mHold.mImageView.setImageResource(mShortcuts.getID_icon());;
 		mHold.mTextView.setText(mShortcuts.getShortcutsName());
 		mHold.Addbt.setOnClickListener(new OnClickListener() {
 			
